@@ -7,6 +7,9 @@ import schedule
 import random
 import json
 
+# Función que devuelve la ruta absoluta
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 if not exists("datos.json"):
 
     salir = False
@@ -81,13 +84,7 @@ USER = datos["user"]
 PASSWORD = datos["password"]
 LINK = datos["link"]
 ARROBAS_REUTILIZABLES = datos["arrobasReutilizables"]
-
-print(USER)
-print(PASSWORD)
-print(LINK)
-
-# Función que devuelve la ruta absoluta
-script_dir = os.path.dirname(os.path.abspath(__file__))
+ARROBAS = datos["arrobas"]
 
 # Para que esto funcione hay que pegar el archivo geckodriver.exe en la carpeta donde está instalado el Firefox
 driver = webdriver.Firefox()
@@ -122,7 +119,7 @@ def cambiarNumero():
                 usandoReutilizables = False
                 numeroCuenta1 = ARROBAS_REUTILIZABLES - 1
                 numeroCuenta2 = ARROBAS_REUTILIZABLES
-    elif numeroCuenta2 != len(arrobas) - 1:
+    elif numeroCuenta2 != len(ARROBAS) - 1:
         numeroCuenta1 += 1
         numeroCuenta2 += 1
     else:
@@ -130,12 +127,13 @@ def cambiarNumero():
 
 def escribirComentario():
     global driver
+    global ARROBAS
     time.sleep(random.randint(0, 10))
     actions = ActionChains(driver)
-    actions.send_keys("@" + arrobas[numeroCuenta1] + " @" + arrobas[numeroCuenta2])
+    actions.send_keys("@" + ARROBAS[numeroCuenta1] + " @" + ARROBAS[numeroCuenta2])
     actions.perform()
     cambiarNumero()
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(100)
     sendButton = driver.find_element(by = "xpath", value = "//*[text()='Publicar']")
     sendButton.click()
 
@@ -150,7 +148,7 @@ password.send_keys(PASSWORD)
 
 driver.implicitly_wait(10)
 loginButton = driver.find_element(by = "xpath", value = "//*[text()='Iniciar sesión']")
-loginButton.lick()
+loginButton.click()
 
 driver.implicitly_wait(10)
 dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
