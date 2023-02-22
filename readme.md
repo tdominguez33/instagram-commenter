@@ -25,6 +25,7 @@ Así debería verse el archivo JSON que tenemos que generar:
       "user": "therock",
       "password": "password123",
       "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
+      "comentario": "",
       "arrobas": [
         "badbunnypr",
         "willyrex",
@@ -68,6 +69,7 @@ Y así hasta que se acaben, después de eso vuelve al modo de comentar a cada pe
           "user": "therock",
           "password": "password123",
           "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
+          "comentario": "",
           "arrobas": [
             "pepe",
             "fulano",
@@ -84,3 +86,21 @@ Solo se van a hacer repeticiones "completas" con "pepe", "fulano" y "mengano", y
 
 ## *"Che ya me estas cansando ¿algo más?"*
 Nop, con eso ya tenés todo lo que hace falta para usar el programa, solo te queda esperar a que el programa comente, tranqui, una vez que abrís el programa podés dejarlo minimizado y hace las cosas solo, cuando termina se cierra solo.
+
+## *NUEVO!!* Modo comentario simple
+Ahora si llegas a encontrar un sorteo que pide que simplemente comentes un texto, como un hashtag por ejemplo, podes usar el programa para hacerlo!!
+
+Ya está todo integrado en la configuración inicial del programa asi que la manera facil es volver a general el archivo JSON (si ya tenés uno armado te recomiendo simplemente borrarlo y correr el programa).
+
+Si sos medio hacker y te queres hacer el picante podes añadir el texto que queres que se comente en el archivo JSON directamente como en este ejemplo:
+
+    {
+      "user": "therock",
+      "password": "password123",
+      "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
+      "comentario": "#HashtagParaGanar",
+      "arrobas": [],
+      "arrobasReutilizables": 0
+    }
+
+Es mucho muy importante que si vas a usar el modo de comentario simple, mientras el la sección de "comentario" tenga algo el programa va a ignorar los arrobas y solo va a comentar el texto.

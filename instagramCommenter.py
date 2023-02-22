@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from os.path import exists
+import pickle
 import time
 import schedule
 import random
@@ -9,13 +11,14 @@ import inicializar
 inicializar.start()
 
 # Extraemos los datos del JSON
-f = open ('datos.json', "r")
-datos = json.loads(f.read())
-f.close()
+with open('datos.json', 'r') as json_file:
+	datos = json.load(json_file)
 
+# Constantes del JSON
 USER = datos["user"]
 PASSWORD = datos["password"]
 LINK = datos["link"]
+COMENTARIO = datos["comentario"]
 ARROBAS_REUTILIZABLES = datos["arrobasReutilizables"]
 ARROBAS = datos["arrobas"]
 
@@ -33,9 +36,9 @@ else:
 
 def cambiarNumero():
     global ARROBAS_REUTILIZABLES
-    global hayArrobasDisponibles
     global numeroCuenta1
     global numeroCuenta2
+    global hayArrobasDisponibles
     global usandoReutilizables
 
     if usandoReutilizables:
@@ -58,8 +61,30 @@ def cambiarNumero():
     else:
         hayArrobasDisponibles = False
 
-def escribirComentario():
-    global driver
+def actualizarContador():
+    with open('contador.txt', 'r') as archivoContador:
+        contador = int(archivoContador.read()) + 1
+    
+    print(contador, " comentarios")
+    
+    with open('contador.txt', 'w') as archivoContador:
+        archivoContador.write(str(contador))
+
+def reiniciarContador():
+    with open('contador.txt', 'w') as archivoContador:
+        archivoContador.write("0")
+
+def escribirComentarioSimple(driver):
+    time.sleep(random.randint(0, 10))
+    actions = ActionChains(driver)
+    actions.send_keys(COMENTARIO)
+    actions.perform()
+    driver.implicitly_wait(100)
+    sendButton = driver.find_element(by = "xpath", value = "//*[text()='Publicar']")
+    sendButton.click()
+    actualizarContador()
+
+def escribirComentarioArrobas(driver):
     time.sleep(random.randint(0, 10))
     actions = ActionChains(driver)
     actions.send_keys("@" + ARROBAS[numeroCuenta1] + " @" + ARROBAS[numeroCuenta2])
@@ -68,27 +93,45 @@ def escribirComentario():
     driver.implicitly_wait(100)
     sendButton = driver.find_element(by = "xpath", value = "//*[text()='Publicar']")
     sendButton.click()
+    actualizarContador()
+
+# Obtenemos las cookies para el usuario si no existen
+def cargarCookies(driver, user, password):
+    if not exists("cookies.pkl"):
+        
+        driver.get("https://www.instagram.com")
+
+        driver.implicitly_wait(100)
+        user = driver.find_element(by = "name", value = 'username')
+        user.send_keys(user)
+
+        driver.implicitly_wait(10)
+        password = driver.find_element(by = "name", value = 'password')
+        password.send_keys(password)
+
+        driver.implicitly_wait(10)
+        loginButton = driver.find_element(by = "xpath", value = "//*[text()='Iniciar sesión']")
+        loginButton.click()
+
+        driver.implicitly_wait(10)
+        dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
+        dismissShit.click()
+
+        driver.implicitly_wait(10)
+        dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
+        dismissShit.click()
+
+        pickle.dump(driver.get_cookies(), open("cookies.pkl", "wb"))
+
+    else:
+        driver.get("https://www.instagram.com")
+
+        cookies = pickle.load(open("cookies.pkl", "rb"))
+        for cookie in cookies:
+            driver.add_cookie(cookie)
 
 
-driver.get("https://www.instagram.com")
-driver.implicitly_wait(100)
-user = driver.find_element(by = "name", value = 'username')
-user.send_keys(USER)
-
-password = driver.find_element(by = "name", value = 'password')
-password.send_keys(PASSWORD)
-
-driver.implicitly_wait(10)
-loginButton = driver.find_element(by = "xpath", value = "//*[text()='Iniciar sesión']")
-loginButton.click()
-
-driver.implicitly_wait(10)
-dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
-dismissShit.click()
-
-driver.implicitly_wait(10)
-dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
-dismissShit.click()
+cargarCookies(driver, USER, PASSWORD)
 
 driver.implicitly_wait(10)
 driver.get(LINK)
@@ -96,9 +139,15 @@ driver.get(LINK)
 driver.implicitly_wait(10)
 commentBox = driver.find_element(by = "tag name", value = "textarea")
 commentBox.click()
-escribirComentario()
 
-schedule.every(1).minutes.do(escribirComentario)
+# Definimos que tipo de comentario se hace dependiendo de los datos que hay en el JSON
+if COMENTARIO != "":
+    escribirComentarioSimple(driver)
+    schedule.every(1).minutes.do(escribirComentarioSimple, driver)
+else:
+    escribirComentarioArrobas(driver)
+    schedule.every(1).minutes.do(escribirComentarioArrobas, driver)
+
 
 while hayArrobasDisponibles:
     schedule.run_pending()
