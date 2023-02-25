@@ -7,6 +7,7 @@ import schedule
 import random
 import json
 import inicializar
+from scripts.cls import cls
 
 inicializar.start()
 
@@ -15,15 +16,25 @@ with open('datos.json', 'r') as json_file:
 	datos = json.load(json_file)
 
 # Constantes del JSON
-USER = datos["user"]
-PASSWORD = datos["password"]
 LINK = datos["link"]
 COMENTARIO = datos["comentario"]
 ARROBAS_REUTILIZABLES = datos["arrobasReutilizables"]
 ARROBAS = datos["arrobas"]
 
+
+# SOPORTE DE CHROME NO TESTEADO
+
+FIREFOX = 0
+CHROME = 1
+
+def elegirDriver(tipo):
+    if tipo == FIREFOX:
+        return webdriver.Firefox()
+    elif tipo == CHROME:
+        return webdriver.Chrome()
+
 # Para que esto funcione hay que pegar el archivo geckodriver.exe en la carpeta donde está instalado el Firefox
-driver = webdriver.Firefox()
+driver = elegirDriver(FIREFOX)
 
 numeroCuenta1 = 0
 numeroCuenta2 = 1
@@ -65,7 +76,8 @@ def actualizarContador():
     with open('contador.txt', 'r') as archivoContador:
         contador = int(archivoContador.read()) + 1
     
-    print(contador, " comentarios")
+    cls()
+    print(contador, " Comentarios")
     
     with open('contador.txt', 'w') as archivoContador:
         archivoContador.write(str(contador))
@@ -96,42 +108,27 @@ def escribirComentarioArrobas(driver):
     actualizarContador()
 
 # Obtenemos las cookies para el usuario si no existen
-def cargarCookies(driver, user, password):
+def cargarCookies(driver):
     if not exists("cookies.pkl"):
-        
+
+        print("Se va a abrir una ventana para loguearse a Instagram, una vez que estés en la pantalla principal, presioná enter para continuar...")
+
         driver.get("https://www.instagram.com")
-
-        driver.implicitly_wait(100)
-        user = driver.find_element(by = "name", value = 'username')
-        user.send_keys(user)
-
-        driver.implicitly_wait(10)
-        password = driver.find_element(by = "name", value = 'password')
-        password.send_keys(password)
-
-        driver.implicitly_wait(10)
-        loginButton = driver.find_element(by = "xpath", value = "//*[text()='Iniciar sesión']")
-        loginButton.click()
-
-        driver.implicitly_wait(10)
-        dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
-        dismissShit.click()
-
-        driver.implicitly_wait(10)
-        dismissShit = driver.find_element(by = "xpath", value = "//*[text()='Ahora no']")
-        dismissShit.click()
-
+        input()
         pickle.dump(driver.get_cookies(), open("cookies.pkl", "wb"))
 
     else:
-        driver.get("https://www.instagram.com")
-
         cookies = pickle.load(open("cookies.pkl", "rb"))
+
+        driver.get("https://www.instagram.com")
+            
         for cookie in cookies:
             driver.add_cookie(cookie)
+            
+        driver.get("https://www.instagram.com")
 
 
-cargarCookies(driver, USER, PASSWORD)
+cargarCookies(driver)
 
 driver.implicitly_wait(10)
 driver.get(LINK)

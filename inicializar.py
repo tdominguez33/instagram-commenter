@@ -1,4 +1,5 @@
 from os.path import exists
+from scripts.cls import cls
 import json
 
 def start():
@@ -10,8 +11,6 @@ def start():
         repetir = True
 
         datos = {
-            "user": "user",
-            "password": "password",
             "link": "link",
             "comentario": "comentario",
             "arrobas": [],
@@ -19,36 +18,24 @@ def start():
         }
 
         while repetir == True:
-            USER = input("Ingresar Usuario: ")
-            rta = input("'" + USER + "' este es tu usuario ingresado, ¿Es correcto? S/N: ")
-            if rta == 'S':
-                repetir = False
-
-        repetir = True
-
-        while repetir == True:
-            PASSWORD = input("Ingresar Contraseña: ")
-            rta = input("'" + PASSWORD + "' este es tu contraseña ingresada, ¿Es correcta? S/N: ")
-            if rta == 'S':
-                repetir = False
-
-        repetir = True
-
-        while repetir == True:
+            cls()
             LINK = input("Ingresar link de la publicación a comentar: ")
             rta = input("'" + LINK + "' este es la página ingresada, ¿Es correcta? S/N: ")
-            if rta == 'S':
+            if rta == 'S' or 's':
                 repetir = False
         
         repetir = True
 
         while repetir == True:
+            cls()
             rta = input("Seleccione el tipo de comentario a hacer: Comentario Simple [1] / Comentario con usuarios [2]: ")
             if rta == '1':
+                cls()
                 COMENTARIO = input("Ingresar texto del comentario: ")
                 repetir = False
             
             elif rta == '2':
+                cls()
                 COMENTARIO = ""
                 print("Ahora hay que ingresar los usuarios de las cuentas que vamos a etiquetar SIN EL @")
                 print("Para salir ingresar 0")
@@ -63,13 +50,11 @@ def start():
                     print(i)
 
                 rta = input("Esta es la lista ¿estás seguro? S/N: ")
-                if rta == 'N':
+                if rta == 'N' or 'n':
                     exit()
                 repetir = False
 
 
-        datos["user"] = USER
-        datos["password"] = PASSWORD
         datos["link"] = LINK
         datos["comentario"] = COMENTARIO
         datos["arrobas"] = arrobas

@@ -22,8 +22,6 @@ Podemos pensar un archivo JSON como un diccionario en el que uno genera las pala
 Así debería verse el archivo JSON que tenemos que generar:
 
     {
-      "user": "therock",
-      "password": "password123",
       "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
       "comentario": "",
       "arrobas": [
@@ -34,8 +32,6 @@ Así debería verse el archivo JSON que tenemos que generar:
       "arrobasReutilizables": 0
     }
 
- - "user" es tu usuario de Instagram.  
- - "password" es tu contraseña.
  - "link" es el link *(duh)* de la publicación a comentar.
  - En "arrobas" van los usuarios de las cuentas que vamos a etiquetar.
     
@@ -66,8 +62,6 @@ Y así hasta que se acaben, después de eso vuelve al modo de comentar a cada pe
 **MUY IMPORTANTE:** Si se considera la variable arrobasReutilizables los usuarios que va a utilizar son los que esten **PRIMEROS** en la lista, esto quiere decir que si en la lista tengo:
 
     {
-          "user": "therock",
-          "password": "password123",
           "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
           "comentario": "",
           "arrobas": [
@@ -84,23 +78,24 @@ Solo se van a hacer repeticiones "completas" con "pepe", "fulano" y "mengano", y
 
 **MUY IMPORTANTE PARTE 2:** Esta variable solo se puede cambiar editando el JSON, así que sentite especial, es medio un secreto de estado esto.
 
+## *"¿Y como me logueo en Instagram"*
+Tranquilo fiera, ya tenemos todo solucionado, una vez que completes todos los datos, se va a abrir un navegador con la página del login de Instagram, te logueas ahí, volves a la consola, apretás enter y ya quedan guardados todos tus datos para poder loguarte automáticamente cada vez que abras el programa.
+
 ## *"Che ya me estas cansando ¿algo más?"*
 Nop, con eso ya tenés todo lo que hace falta para usar el programa, solo te queda esperar a que el programa comente, tranqui, una vez que abrís el programa podés dejarlo minimizado y hace las cosas solo, cuando termina se cierra solo.
 
 ## *NUEVO!!* Modo comentario simple
 Ahora si llegas a encontrar un sorteo que pide que simplemente comentes un texto, como un hashtag por ejemplo, podes usar el programa para hacerlo!!
 
-Ya está todo integrado en la configuración inicial del programa asi que la manera facil es volver a general el archivo JSON (si ya tenés uno armado te recomiendo simplemente borrarlo y correr el programa).
+Ya está todo integrado en la configuración inicial del programa asi que la manera facil es volver a generar el archivo JSON (si ya tenés uno armado te recomiendo simplemente borrarlo y correr el programa).
 
-Si sos medio hacker y te queres hacer el picante podes añadir el texto que queres que se comente en el archivo JSON directamente como en este ejemplo:
+Si sos medio hacker y te queres hacer el picante podes añadir el texto que querés que se comente en el archivo JSON directamente como en este ejemplo:
 
     {
-      "user": "therock",
-      "password": "password123",
       "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
       "comentario": "#HashtagParaGanar",
       "arrobas": [],
       "arrobasReutilizables": 0
     }
 
-Es mucho muy importante que si vas a usar el modo de comentario simple, mientras el la sección de "comentario" tenga algo el programa va a ignorar los arrobas y solo va a comentar el texto.
+Es mucho muy importante que sepas que si vas a usar el modo de comentario simple, mientras la sección de "comentario" tenga algo, el programa va a ignorar los arrobas y solo va a comentar el texto, es su forma de diferenciar que modo se quiere usar.
