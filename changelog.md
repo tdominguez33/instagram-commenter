@@ -1,6 +1,11 @@
 # Comentador Instagam - Registro de Cambios
 
-## Versión 1.2 - 22/02/2023
+## Versión 1.3 - 26/02/2023
+- ##### Ahora no hay que descargar el archivo del driver.
+- ##### Añadido (ahora sí) soporte para Google Chrome.
+- ##### Ahora el programa crea el archivo "contador.txt" si no existe.
+
+## Versión 1.2 - 24/02/2023
 - ##### Mejorado proceso inicial de configuración.
 - ##### Añadido (teóricamente) soporte para Google Chrome.
 - ##### Limpiada un poco la consola.

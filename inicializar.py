@@ -11,11 +11,23 @@ def start():
         repetir = True
 
         datos = {
+            "navegador": 0,
             "link": "link",
             "comentario": "comentario",
             "arrobas": [],
             "arrobasReutilizables": 0
         }
+
+        while repetir == True:
+            rta = input("Que navegador quieres usar (Tiene que estar instalado) Firefox [0] / Chrome [1] ")
+            if rta == '0':
+                NAVEGADOR = 0
+                repetir = False
+            elif rta == '1':
+                NAVEGADOR = 1
+                repetir = False
+            else:
+                print("Ingrese un valor válido")
 
         while repetir == True:
             cls()
@@ -54,7 +66,7 @@ def start():
                     exit()
                 repetir = False
 
-
+        datos["navegador"] = NAVEGADOR
         datos["link"] = LINK
         datos["comentario"] = COMENTARIO
         datos["arrobas"] = arrobas

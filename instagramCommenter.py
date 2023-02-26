@@ -1,4 +1,3 @@
-from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from os.path import exists
 import pickle
@@ -8,6 +7,7 @@ import random
 import json
 import inicializar
 from scripts.cls import cls
+from scripts.driverSelector import elegirDriver
 
 inicializar.start()
 
@@ -16,25 +16,11 @@ with open('datos.json', 'r') as json_file:
 	datos = json.load(json_file)
 
 # Constantes del JSON
+NAVEGADOR = datos["navegador"]
 LINK = datos["link"]
 COMENTARIO = datos["comentario"]
 ARROBAS_REUTILIZABLES = datos["arrobasReutilizables"]
 ARROBAS = datos["arrobas"]
-
-
-# SOPORTE DE CHROME NO TESTEADO
-
-FIREFOX = 0
-CHROME = 1
-
-def elegirDriver(tipo):
-    if tipo == FIREFOX:
-        return webdriver.Firefox()
-    elif tipo == CHROME:
-        return webdriver.Chrome()
-
-# Para que esto funcione hay que pegar el archivo geckodriver.exe en la carpeta donde está instalado el Firefox
-driver = elegirDriver(FIREFOX)
 
 numeroCuenta1 = 0
 numeroCuenta2 = 1
@@ -73,6 +59,10 @@ def cambiarNumero():
         hayArrobasDisponibles = False
 
 def actualizarContador():
+    if not exists ("contador.txt"):
+        with open('contador.txt', 'w') as archivoContador:
+            archivoContador.write("0")
+    
     with open('contador.txt', 'r') as archivoContador:
         contador = int(archivoContador.read()) + 1
     
@@ -127,6 +117,8 @@ def cargarCookies(driver):
             
         driver.get("https://www.instagram.com")
 
+
+driver = elegirDriver(NAVEGADOR)
 
 cargarCookies(driver)
 

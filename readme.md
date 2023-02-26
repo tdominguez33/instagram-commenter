@@ -10,7 +10,7 @@ Pará emoción, primero hay un par de cosas que necesitas saber antes de poder u
 
 1. El programa así como viene necesita que le configures tu usuario y contraseña (No Mabel, nadie te va a robar la contraseña, no sos tan importante. De todos modos, si seguís desconfiando, el programa es código abierto por una razón...)
 2. Además de configurar el inicio de sesión, hay que agregarle las cuentas que vamos a arrobar: este programa no usa bots ni nada por el estilo, la idea es generar los comentarios más genuinos posibles (si empezas a arrobar cuentas árabes random, seguro los del sorteo se dan cuenta y ni te cuentan si ganas). 
-3. El programa necesita que tengas el navegador **Firefox** (el del zorro) instalado y descomprimas y copies [este archivo](https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-win64.zip) (si tenés Windows de 64 bits), o [este](https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-win32.zip) (si tenés de 32 bits), en la carpeta de instalación.
+3. El programa necesita que tengas el navegador **Chrome** o el **Firefox** (el del zorro) ya instalado.
 
 ## *"Bueno no pasa nada, me la re banco y configuro todo"*
 ¡Excelente! hace falta más gente como vos en este país.  
@@ -22,6 +22,7 @@ Podemos pensar un archivo JSON como un diccionario en el que uno genera las pala
 Así debería verse el archivo JSON que tenemos que generar:
 
     {
+      "navegador": 0,
       "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
       "comentario": "",
       "arrobas": [
@@ -34,6 +35,7 @@ Así debería verse el archivo JSON que tenemos que generar:
 
  - "link" es el link *(duh)* de la publicación a comentar.
  - En "arrobas" van los usuarios de las cuentas que vamos a etiquetar.
+ - A las otras cosas no le des bola, las explico más adelante.
     
 El archivo debería llamarse **datos.json** (así calcado, sin mayúsculas ni nada) y tiene que estar **EN LA MISMA CARPETA** que el programa principal.
 
@@ -62,6 +64,7 @@ Y así hasta que se acaben, después de eso vuelve al modo de comentar a cada pe
 **MUY IMPORTANTE:** Si se considera la variable arrobasReutilizables los usuarios que va a utilizar son los que esten **PRIMEROS** en la lista, esto quiere decir que si en la lista tengo:
 
     {
+          "navegador": 0,
           "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
           "comentario": "",
           "arrobas": [
@@ -92,6 +95,7 @@ Ya está todo integrado en la configuración inicial del programa asi que la man
 Si sos medio hacker y te queres hacer el picante podes añadir el texto que querés que se comente en el archivo JSON directamente como en este ejemplo:
 
     {
+      "navegador": 0,
       "link": "https://www.instagram.com/p/BuNGZMzn5BE/",
       "comentario": "#HashtagParaGanar",
       "arrobas": [],
