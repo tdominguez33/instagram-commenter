@@ -7,6 +7,7 @@ def start():
 
         salir = False
         arrobas = []
+        COMENTARIO = ""
 
         repetir = True
 
@@ -28,6 +29,8 @@ def start():
                 repetir = False
             else:
                 print("Ingrese un valor válido")
+
+        repetir = True
 
         while repetir == True:
             cls()
@@ -62,9 +65,11 @@ def start():
                     print(i)
 
                 rta = input("Esta es la lista ¿estás seguro? S/N: ")
-                if rta == 'N' or 'n':
+                if rta == 'S' or 's':
+                    repetir = False
+                else:
                     exit()
-                repetir = False
+                
 
         datos["navegador"] = NAVEGADOR
         datos["link"] = LINK
